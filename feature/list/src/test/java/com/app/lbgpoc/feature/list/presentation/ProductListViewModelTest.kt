@@ -1,14 +1,17 @@
 package com.app.lbgpoc.feature.list.presentation
 
 import com.app.lbgpoc.core.common.Result
-import com.app.lbgpoc.feature.list.domain.model.ListProduct
+import com.app.lbgpoc.core.common.DataError
+import com.app.lbgpoc.feature.list.domain.model.Product
+import com.app.lbgpoc.feature.list.domain.model.Rating
 import com.app.lbgpoc.feature.list.domain.usecase.GetProductsUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -25,12 +28,15 @@ class ProductListViewModelTest {
 
     private lateinit var getProductsUseCase: GetProductsUseCase
     private lateinit var viewModel: ProductListViewModel
-    private val testDispatcher = UnconfinedTestDispatcher()
+    private val testDispatcher = StandardTestDispatcher()
+    private val productsFlow = MutableSharedFlow<Result<List<Product>>>()
 
     @Before
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         getProductsUseCase = mockk()
+        coEvery { getProductsUseCase() } returns productsFlow
+        viewModel = ProductListViewModel(getProductsUseCase)
     }
 
     @After
@@ -42,26 +48,26 @@ class ProductListViewModelTest {
     fun `loadProducts updates state to Success`() = runTest {
         // Arrange
         val mockProducts = listOf(
-            ListProduct(id = 1, title = "Product 1", price = 10.0, imageUrl = "")
+            Product(
+                id = 1,
+                title = "Product 1",
+                price = 10.0,
+                imageUrl = "",
+                description = "Description",
+                category = "Category",
+                rating = Rating(4.5, 100)
+            )
         )
-        // Simulate a flow emitting loading then success
-        coEvery { getProductsUseCase() } returns flowOf(
-            Result.Loading,
-            Result.Success(mockProducts)
-        )
 
-        // Instantiate ViewModel
-        viewModel = ProductListViewModel(getProductsUseCase)
-        
-        // Assert initial state
-        assertFalse(viewModel.listState.value.isLoading)
-        assertTrue(viewModel.listState.value.products.isEmpty())
+        // Act - the collector is already started in init, so we emit values
+        productsFlow.emit(Result.Loading)
+        advanceUntilIdle()
+        assertTrue(viewModel.listState.value.isLoading)
 
-        // Act
-        viewModel.loadProducts()
+        productsFlow.emit(Result.Success(mockProducts))
+        advanceUntilIdle()
 
-        // Assert final state: UnconfinedTestDispatcher executes coroutine eagerly,
-        // so state is already updated to Success.
+        // Assert
         val finalState = viewModel.listState.value
         assertFalse(finalState.isLoading)
         assertEquals(mockProducts, finalState.products)
@@ -70,22 +76,18 @@ class ProductListViewModelTest {
 
     @Test
     fun `loadProducts updates state to Error`() = runTest {
-        // Arrange
-        coEvery { getProductsUseCase() } returns flowOf(
-            Result.Loading,
-            Result.Error("Network Failure")
-        )
-
-        // Instantiate ViewModel
-        viewModel = ProductListViewModel(getProductsUseCase)
-
         // Act
-        viewModel.loadProducts()
+        productsFlow.emit(Result.Loading)
+        advanceUntilIdle()
+        assertTrue(viewModel.listState.value.isLoading)
 
-        // Assert final state
+        productsFlow.emit(Result.Error(DataError.Network.UNKNOWN))
+        advanceUntilIdle()
+
+        // Assert
         val finalState = viewModel.listState.value
         assertFalse(finalState.isLoading)
-        assertEquals("Network Failure", finalState.error)
+        assertEquals(DataError.Network.UNKNOWN, finalState.error)
         assertTrue(finalState.products.isEmpty())
     }
 }

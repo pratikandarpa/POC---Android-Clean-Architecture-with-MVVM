@@ -2,6 +2,6 @@ package com.app.lbgpoc.core.common
 
 sealed class Result<out T> {
     data class Success<out T>(val data: T) : Result<T>()
-    data class Error(val message: String, val exception: Exception? = null) : Result<Nothing>()
+    data class Error(val error: AppError, val exception: Exception? = null) : Result<Nothing>()
     object Loading : Result<Nothing>()
 }

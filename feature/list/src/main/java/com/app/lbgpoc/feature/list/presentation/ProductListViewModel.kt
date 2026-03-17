@@ -3,7 +3,8 @@ package com.app.lbgpoc.feature.list.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.lbgpoc.core.common.Result
-import com.app.lbgpoc.feature.list.domain.model.ListProduct
+import com.app.lbgpoc.core.common.AppError
+import com.app.lbgpoc.feature.list.domain.model.Product
 import com.app.lbgpoc.feature.list.domain.usecase.GetProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,8 +15,8 @@ import javax.inject.Inject
 
 data class ProductListState(
     val isLoading: Boolean = false,
-    val products: List<ListProduct> = emptyList(),
-    val error: String? = null
+    val products: List<Product> = emptyList(),
+    val error: AppError? = null
 )
 
 @HiltViewModel
@@ -25,6 +26,10 @@ class ProductListViewModel @Inject constructor(
 
     private val _listState = MutableStateFlow(ProductListState())
     val listState: StateFlow<ProductListState> = _listState.asStateFlow()
+
+    init {
+        loadProducts()
+    }
 
     fun loadProducts() {
         viewModelScope.launch {
@@ -37,7 +42,7 @@ class ProductListViewModel @Inject constructor(
                         _listState.value.copy(isLoading = false, products = result.data)
 
                     is Result.Error -> _listState.value =
-                        _listState.value.copy(isLoading = false, error = result.message)
+                        _listState.value.copy(isLoading = false, error = result.error)
                 }
             }
         }

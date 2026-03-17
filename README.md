@@ -35,3 +35,14 @@ The application employs a robust unit testing strategy for the Presentation (Vie
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="docs/detail_screenshot.png" alt="Product Detail Screenshot" width="30%"/>
 </div>
+
+## Setup Instructions
+
+To build and run the app, you need to configure the required API endpoints in your `local.properties` file.
+
+1. Create a `local.properties` file in the root directory of the project (if it doesn't exist).
+2. Add the following line to the file:
+   ```properties
+   BASE_URL=https://fakestoreapi.com/
+   ```
+3. Sync the project with Gradle files.

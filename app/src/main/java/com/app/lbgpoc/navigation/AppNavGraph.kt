@@ -6,16 +6,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.app.lbgpoc.feature.detail.presentation.ProductDetailScreen
-import com.app.lbgpoc.feature.detail.presentation.ProductDetailViewModel
+import com.app.lbgpoc.feature.list.presentation.ProductDetailScreen
 import com.app.lbgpoc.feature.list.presentation.ProductListScreen
 import com.app.lbgpoc.feature.list.presentation.ProductListViewModel
+import com.app.lbgpoc.feature.list.domain.model.Product
+import com.google.gson.Gson
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
+    val gson = Gson()
+
     NavHost(
         navController = navController,
         startDestination = Screen.ProductList.route,
@@ -25,20 +28,24 @@ fun AppNavGraph(
             val viewModel: ProductListViewModel = hiltViewModel()
             ProductListScreen(
                 viewModel = viewModel,
-                onProductClick = { productId ->
-                    navController.navigate(Screen.ProductDetail.createRoute(productId))
+                onProductClick = { product ->
+                    val productJson = gson.toJson(product)
+                    val encodedJson = android.net.Uri.encode(productJson)
+                    navController.navigate(Screen.ProductDetail.createRoute(encodedJson))
                 }
             )
         }
         composable(Screen.ProductDetail.route) { backStackEntry ->
-            val productIdStr = backStackEntry.arguments?.getString("productId")
-            val productId = productIdStr?.toIntOrNull()
-            
-            if (productId != null) {
-                val viewModel: ProductDetailViewModel = hiltViewModel()
+            val productJson = backStackEntry.arguments?.getString("productJson")
+            val product = try {
+                productJson?.let { gson.fromJson(it, Product::class.java) }
+            } catch (e: Exception) {
+                null
+            }
+
+            if (product != null) {
                 ProductDetailScreen(
-                    productId = productId,
-                    viewModel = viewModel,
+                    product = product,
                     onBackClick = {
                         navController.popBackStack()
                     }
@@ -47,3 +54,4 @@ fun AppNavGraph(
         }
     }
 }
+

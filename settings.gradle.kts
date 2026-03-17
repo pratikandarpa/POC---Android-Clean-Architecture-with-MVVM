@@ -11,9 +11,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
-}
+// plugins {
+//     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+// }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -27,4 +27,4 @@ include(":app")
 include(":core:common")
 include(":core:network")
 include(":feature:list")
-include(":feature:detail")
+

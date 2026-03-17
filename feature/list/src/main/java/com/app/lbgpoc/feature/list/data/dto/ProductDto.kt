@@ -1,16 +1,16 @@
-package com.app.lbgpoc.feature.detail.domain.model
+package com.app.lbgpoc.feature.list.data.dto
 
-data class DetailProduct(
+data class ProductDto(
     val id: Int,
     val title: String,
     val price: Double,
     val description: String,
     val category: String,
-    val imageUrl: String,
-    val rating: Rating
+    val image: String,
+    val rating: RatingDto
 )
 
-data class Rating(
+data class RatingDto(
     val rate: Double,
     val count: Int
 )
