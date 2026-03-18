@@ -17,8 +17,7 @@ This application demonstrates a modular, scalable architecture using modern Andr
 - **app**: Handles standard App configurations and acts as the entry point and dependency wiring layer.
 - **core:common**: Common wrappers like `Result<T>` handling state.
 - **core:network**: Global networking configuration (e.g. Retrofit instances, Interceptors).
-- **feature:list**: Self-contained module for fetching and displaying the list of products.
-- **feature:detail**: Self-contained module logic for showing product details.
+- **feature:list**: Self-contained module for fetching and displaying the list of products and showing product details.
 
 ## Features
 - List of products.
@@ -35,14 +34,3 @@ The application employs a robust unit testing strategy for the Presentation (Vie
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="docs/detail_screenshot.png" alt="Product Detail Screenshot" width="30%"/>
 </div>
-
-## Setup Instructions
-
-To build and run the app, you need to configure the required API endpoints in your `local.properties` file.
-
-1. Create a `local.properties` file in the root directory of the project (if it doesn't exist).
-2. Add the following line to the file:
-   ```properties
-   BASE_URL=https://fakestoreapi.com/
-   ```
-3. Sync the project with Gradle files.
