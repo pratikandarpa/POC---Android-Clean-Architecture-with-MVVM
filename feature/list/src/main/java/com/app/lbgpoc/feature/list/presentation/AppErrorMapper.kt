@@ -14,7 +14,6 @@ fun AppError.asUiText(): String {
                 DataError.Network.SERVICE_UNAVAILABLE -> R.string.error_server
                 DataError.Network.CLIENT_ERROR -> R.string.error_client
                 DataError.Network.SERVER_ERROR -> R.string.error_server
-                DataError.Network.NO_INTERNET -> R.string.error_no_internet
                 DataError.Network.UNKNOWN -> R.string.error_unexpected
             }
             stringResource(resId)

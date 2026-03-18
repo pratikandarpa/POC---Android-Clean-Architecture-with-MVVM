@@ -13,7 +13,6 @@ fun Throwable.toDataError(): DataError {
                 else -> DataError.Network.UNKNOWN
             }
         }
-        is IOException -> DataError.Network.NO_INTERNET
         else -> DataError.Network.UNKNOWN
     }
 }

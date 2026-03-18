@@ -1,8 +1,7 @@
 package com.app.lbgpoc.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -17,8 +16,6 @@ fun AppNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val viewModel: ProductListViewModel = hiltViewModel()
-
     NavHost(
         navController = navController,
         startDestination = Screen.ProductList.route,
@@ -26,25 +23,19 @@ fun AppNavGraph(
     ) {
         composable(Screen.ProductList.route) {
             ProductListScreen(
-                viewModel = viewModel,
+                navController = navController,
                 onProductClick = { product ->
-                    viewModel.selectProduct(product)
                     navController.navigate(Screen.ProductDetail.route)
                 }
             )
         }
         composable(Screen.ProductDetail.route) {
-            val state by viewModel.listState.collectAsState()
-
-            state.selectedProduct?.let { product ->
-                ProductDetailScreen(
-                    product = product,
-                    onBackClick = {
-                        viewModel.clearSelectedProduct()
-                        navController.popBackStack()
-                    }
-                )
-            }
+            ProductDetailScreen(
+                navController = navController,
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
         }
     }
 }

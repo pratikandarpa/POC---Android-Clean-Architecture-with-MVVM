@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.runtime.remember
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -39,9 +42,14 @@ import com.app.lbgpoc.feature.list.domain.model.Product
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListScreen(
-    viewModel: ProductListViewModel,
+    navController: NavController,
     onProductClick: (Product) -> Unit
 ) {
+    val viewModel: ProductListViewModel = hiltViewModel(
+        remember(navController.currentBackStackEntry) {
+            navController.getBackStackEntry(navController.graph.id)
+        }
+    )
     val state by viewModel.listState.collectAsState()
 
     Scaffold(
@@ -80,7 +88,10 @@ fun ProductListScreen(
                         items(state.products) { product ->
                             ProductItem(
                                 product = product,
-                                onClick = { onProductClick(product) }
+                                onClick = {
+                                    viewModel.selectProduct(product)
+                                    onProductClick(product)
+                                }
                             )
                         }
                     }

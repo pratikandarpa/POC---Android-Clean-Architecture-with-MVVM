@@ -7,7 +7,6 @@ sealed interface DataError : AppError {
         SERVICE_UNAVAILABLE,
         CLIENT_ERROR,
         SERVER_ERROR,
-        NO_INTERNET,
         UNKNOWN
     }
 }
