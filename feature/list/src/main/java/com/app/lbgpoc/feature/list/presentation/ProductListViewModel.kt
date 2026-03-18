@@ -16,7 +16,8 @@ import javax.inject.Inject
 data class ProductListState(
     val isLoading: Boolean = false,
     val products: List<Product> = emptyList(),
-    val error: AppError? = null
+    val error: AppError? = null,
+    val selectedProduct: Product? = null
 )
 
 @HiltViewModel
@@ -46,5 +47,13 @@ class ProductListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    fun selectProduct(product: Product) {
+        _listState.value = _listState.value.copy(selectedProduct = product)
+    }
+
+    fun clearSelectedProduct() {
+        _listState.value = _listState.value.copy(selectedProduct = null)
     }
 }

@@ -1,9 +1,5 @@
 package com.app.lbgpoc.feature.list.domain.model
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-
-@Parcelize
 data class Product(
     val id: Int,
     val title: String,
@@ -12,10 +8,9 @@ data class Product(
     val category: String,
     val imageUrl: String,
     val rating: Rating
-) : Parcelable
+)
 
-@Parcelize
 data class Rating(
     val rate: Double,
     val count: Int
-) : Parcelable
+)

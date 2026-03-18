@@ -8,13 +8,6 @@ sealed interface DataError : AppError {
         CLIENT_ERROR,
         SERVER_ERROR,
         NO_INTERNET,
-        PAYLOAD_TOO_LARGE,
-        REQUEST_TIMEOUT,
-        SERIALIZATION,
-        UNKNOWN
-    }
-    enum class Local : DataError {
-        DISK_FULL,
         UNKNOWN
     }
 }

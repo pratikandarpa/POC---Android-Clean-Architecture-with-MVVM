@@ -15,16 +15,9 @@ fun AppError.asUiText(): String {
                 DataError.Network.CLIENT_ERROR -> R.string.error_client
                 DataError.Network.SERVER_ERROR -> R.string.error_server
                 DataError.Network.NO_INTERNET -> R.string.error_no_internet
-                DataError.Network.PAYLOAD_TOO_LARGE -> R.string.error_client
-                DataError.Network.REQUEST_TIMEOUT -> R.string.error_timeout
-                DataError.Network.SERIALIZATION -> R.string.error_unexpected
                 DataError.Network.UNKNOWN -> R.string.error_unexpected
             }
             stringResource(resId)
         }
-        is DataError.Local -> {
-            stringResource(R.string.error_unexpected)
-        }
-        else -> stringResource(R.string.error_unknown)
     }
 }

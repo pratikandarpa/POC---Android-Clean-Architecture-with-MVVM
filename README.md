@@ -5,7 +5,7 @@ This application demonstrates a modular, scalable architecture using modern Andr
 ## Architecture & Tech Stack
 
 - **Architecture:** Clean Architecture with MVVM
-- **Modularization:** Multi-module setup (`app`, `:core:common`, `:core:network`, `:feature:list`, `:feature:detail`)
+- **Modularization:** Multi-module setup (`app`, `:core:common`, `:core:network`, `:feature:list`)
 - **UI:** Jetpack Compose (using Material 3)
 - **Dependency Injection:** Hilt
 - **Network Layer:** Retrofit + OkHttp

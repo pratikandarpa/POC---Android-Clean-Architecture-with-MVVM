@@ -1,6 +1,8 @@
 package com.app.lbgpoc.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -9,15 +11,13 @@ import androidx.navigation.compose.composable
 import com.app.lbgpoc.feature.list.presentation.ProductDetailScreen
 import com.app.lbgpoc.feature.list.presentation.ProductListScreen
 import com.app.lbgpoc.feature.list.presentation.ProductListViewModel
-import com.app.lbgpoc.feature.list.domain.model.Product
-import com.google.gson.Gson
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
-    val gson = Gson()
+    val viewModel: ProductListViewModel = hiltViewModel()
 
     NavHost(
         navController = navController,
@@ -25,28 +25,22 @@ fun AppNavGraph(
         modifier = modifier
     ) {
         composable(Screen.ProductList.route) {
-            val viewModel: ProductListViewModel = hiltViewModel()
             ProductListScreen(
                 viewModel = viewModel,
                 onProductClick = { product ->
-                    val productJson = gson.toJson(product)
-                    val encodedJson = android.net.Uri.encode(productJson)
-                    navController.navigate(Screen.ProductDetail.createRoute(encodedJson))
+                    viewModel.selectProduct(product)
+                    navController.navigate(Screen.ProductDetail.route)
                 }
             )
         }
-        composable(Screen.ProductDetail.route) { backStackEntry ->
-            val productJson = backStackEntry.arguments?.getString("productJson")
-            val product = try {
-                productJson?.let { gson.fromJson(it, Product::class.java) }
-            } catch (e: Exception) {
-                null
-            }
+        composable(Screen.ProductDetail.route) {
+            val state by viewModel.listState.collectAsState()
 
-            if (product != null) {
+            state.selectedProduct?.let { product ->
                 ProductDetailScreen(
                     product = product,
                     onBackClick = {
+                        viewModel.clearSelectedProduct()
                         navController.popBackStack()
                     }
                 )

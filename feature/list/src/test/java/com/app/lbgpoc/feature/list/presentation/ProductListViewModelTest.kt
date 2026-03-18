@@ -59,11 +59,10 @@ class ProductListViewModelTest {
             )
         )
 
-        // Act - the collector is already started in init, so we emit values
+        // Act
         productsFlow.emit(Result.Loading)
         advanceUntilIdle()
         assertTrue(viewModel.listState.value.isLoading)
-
         productsFlow.emit(Result.Success(mockProducts))
         advanceUntilIdle()
 
@@ -80,7 +79,6 @@ class ProductListViewModelTest {
         productsFlow.emit(Result.Loading)
         advanceUntilIdle()
         assertTrue(viewModel.listState.value.isLoading)
-
         productsFlow.emit(Result.Error(DataError.Network.UNKNOWN))
         advanceUntilIdle()
 
