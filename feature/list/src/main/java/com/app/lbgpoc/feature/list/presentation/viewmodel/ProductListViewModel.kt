@@ -1,4 +1,4 @@
-package com.app.lbgpoc.feature.list.presentation
+package com.app.lbgpoc.feature.list.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -5,6 +5,7 @@ import com.app.lbgpoc.core.common.DataError
 import com.app.lbgpoc.feature.list.domain.model.Product
 import com.app.lbgpoc.feature.list.domain.model.Rating
 import com.app.lbgpoc.feature.list.domain.usecase.GetProductsUseCase
+import com.app.lbgpoc.feature.list.presentation.viewmodel.ProductListViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers

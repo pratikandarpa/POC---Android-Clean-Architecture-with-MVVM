@@ -1,4 +1,4 @@
-package com.app.lbgpoc.feature.list.presentation
+package com.app.lbgpoc.feature.list.presentation.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.app.lbgpoc.feature.list.R
 import com.app.lbgpoc.feature.list.domain.model.Product
+import com.app.lbgpoc.feature.list.presentation.viewmodel.ProductListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

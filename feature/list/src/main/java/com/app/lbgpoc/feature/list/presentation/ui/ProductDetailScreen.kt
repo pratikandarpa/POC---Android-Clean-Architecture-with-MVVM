@@ -1,4 +1,4 @@
-package com.app.lbgpoc.feature.list.presentation
+package com.app.lbgpoc.feature.list.presentation.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.app.lbgpoc.feature.list.R
-import com.app.lbgpoc.feature.list.domain.model.Product
+import com.app.lbgpoc.feature.list.presentation.viewmodel.ProductListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +54,6 @@ fun ProductDetailScreen(
                     title = { Text(stringResource(R.string.detail_title)) },
                     navigationIcon = {
                         IconButton(onClick = {
-//                            viewModel.clearSelectedProduct()
                             onBackClick()
                         }) {
                             Icon(
