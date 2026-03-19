@@ -21,7 +21,7 @@ fun AppNavGraph(
         composable(Screen.ProductList.route) {
             ProductListScreen(
                 navController = navController,
-                onProductClick = { product ->
+                onProductClick = {
                     navController.navigate(Screen.ProductDetail.route)
                 }
             )

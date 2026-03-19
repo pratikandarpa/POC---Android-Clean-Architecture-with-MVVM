@@ -44,7 +44,7 @@ import com.app.lbgpoc.feature.list.presentation.viewmodel.ProductListViewModel
 @Composable
 fun ProductListScreen(
     navController: NavController,
-    onProductClick: (Product) -> Unit
+    onProductClick: () -> Unit
 ) {
     val viewModel: ProductListViewModel = hiltViewModel(
         remember(navController.currentBackStackEntry) {
@@ -91,7 +91,7 @@ fun ProductListScreen(
                                 product = product,
                                 onClick = {
                                     viewModel.selectProduct(product)
-                                    onProductClick(product)
+                                    onProductClick()
                                 }
                             )
                         }
